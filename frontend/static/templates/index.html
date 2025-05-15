@@ -1,0 +1,30 @@
+<!-- frontend/templates/index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>迷羊复习助手</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍃 迷羊智能复习助手</h1>
+            <div class="leaf-decor leaf-left"></div>
+            <div class="leaf-decor leaf-right"></div>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="message bot-message">您好！上传复习资料后开始提问吧🌱</div>
+        </div>
+
+        <div class="input-container">
+            <input type="file" id="fileInput" accept=".pdf,.docx,.txt">
+            <input type="text" id="userInput" placeholder="输入问题...">
+            <button onclick="sendQuestion()">发送</button>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

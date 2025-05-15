@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+env/
+
+# Data
+data/uploads/
+*.pdf
+*.docx
+*.txt
+
+# Environment
+.env
+.env.local
+
+# Docker
+milvus_data/
+ollama/
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data/uploads:/app/data/uploads
+      - ./frontend:/app/frontend
+    depends_on:
+      - milvus
+      - ollama
+    environment:
+      - MILVUS_HOST=milvus
+      - OLLAMA_HOST=ollama:11434
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+
+  milvus:
+    image: milvusdb/milvus:latest
+    ports:
+      - "19530:19530"
+    volumes:
+      - milvus_data:/var/lib/milvus
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - web
+
+volumes:
+  milvus_data:
+  ollama_data:
