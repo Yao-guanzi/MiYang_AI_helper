@@ -44,7 +44,7 @@
 ### 三步快速启动
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/你的用户名/MiYang_AI_helper.git
+git clone https://github.com/Yao-guanzi/MiYang_AI_helper
 
 # 2. 进入项目目录
 cd MiYang_AI_helper
