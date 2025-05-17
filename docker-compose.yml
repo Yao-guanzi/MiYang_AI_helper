@@ -1,5 +1,4 @@
-version: '3.8'
-
+# 删除version声明
 services:
   web:
     build: .
@@ -8,16 +7,11 @@ services:
     volumes:
       - ./data/uploads:/app/data/uploads
       - ./frontend:/app/frontend
-    environment:
-      - MILVUS_HOST=milvus
-      - OLLAMA_HOST=ollama:11434
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+    depends_on:
+      milvus:
+        condition: service_healthy
+      ollama:
+        condition: service_started
 
   milvus:
     image: milvusdb/milvus:latest
@@ -25,8 +19,11 @@ services:
       - "19530:19530"
     volumes:
       - milvus_data:/var/lib/milvus
-    environment:
-      - CUDA_VISIBLE_DEVICES=0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:19530/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   ollama:
     image: ollama/ollama
@@ -34,8 +31,6 @@ services:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
-      - ./models:/root/.ollama/models
-      - ./models/chatglm3-6b:/root/.ollama/models/chatglm3-6b
     deploy:
       resources:
         reservations:
@@ -43,9 +38,6 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    environment:
-      - CUDA_VISIBLE_DEVICES=0
-      - OLLAMA_NUM_GPU=1
 
   nginx:
     image: nginx:alpine
