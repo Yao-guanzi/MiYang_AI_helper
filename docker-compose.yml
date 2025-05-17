@@ -35,6 +35,7 @@ services:
     volumes:
       - ollama_data:/root/.ollama
       - ./models:/root/.ollama/models
+      - ./models/chatglm3-6b:/root/.ollama/models/chatglm3-6b
     deploy:
       resources:
         reservations:

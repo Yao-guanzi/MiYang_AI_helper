@@ -10,6 +10,9 @@ RUN apt-get update && \
     python3.10-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# 在Dockerfile中添加模型路径映射
+ENV MODEL_PATH=/app/models/chatglm3-6b
+
 # 配置Python环境
 RUN ln -sf /usr/bin/python3.10 /usr/bin/python && \
     ln -sf /usr/bin/python3.10 /usr/bin/python3
